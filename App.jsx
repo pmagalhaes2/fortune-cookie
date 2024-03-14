@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   Image,
   StyleSheet,
   Text,
@@ -16,11 +17,12 @@ import Paragraph from './src/components/Paragraph/Paragraph';
 
 const App = () => {
   const [title, setTitle] = useState('Qual é a sua sorte de hoje?');
-  const [message, setMessage] = useState('Clique na imagem e descubra!');
+  const [message, setMessage] = useState('Clique no biscoito e descubra!');
   const [originalMessage, setOriginalMessage] = useState('');
   const [image, setImage] = useState(FortuneCookie);
   const [isOpened, setIsOpened] = useState(false);
   const [language, setLanguage] = useState('pt-BR');
+  const [loading, setLoading] = useState(false);
 
   const toggleImage = async () => {
     const newImage = image === FortuneCookie ? OpenedCookie : FortuneCookie;
@@ -34,17 +36,19 @@ const App = () => {
       await fetchRandomMessage();
     } else {
       setTitle('Qual é a sua sorte de hoje?');
-      setMessage('Clique na imagem e descubra!');
+      setMessage('Clique no biscoito e descubra!');
     }
   };
 
   const fetchRandomMessage = async () => {
     try {
+      setLoading(true);
       const response = await fetch('https://api.quotable.io/quotes/random');
       const data = await response.json();
       const {content} = data[0];
       setMessage(content);
       setOriginalMessage(content);
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -78,8 +82,16 @@ const App = () => {
           <Heading text={title} />
           <TouchableHighlight style={{alignItems: 'flex-end', gap: 2}}>
             <>
-              <Paragraph text={message} isOpened={isOpened} />
-              {isOpened && <Text onPress={toogleTranslation}>{language}</Text>}
+              {loading ? (
+                <ActivityIndicator size="large" />
+              ) : (
+                <>
+                  <Paragraph text={message} isOpened={isOpened} />
+                  {isOpened && (
+                    <Text onPress={toogleTranslation}>{language}</Text>
+                  )}
+                </>
+              )}
             </>
           </TouchableHighlight>
           <TouchableOpacity onPress={toggleImage}>
@@ -103,6 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 15,
     paddingRight: 15,
+    width: '100%',
   },
   image: {
     height: 200,
