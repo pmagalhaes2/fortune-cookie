@@ -13,15 +13,29 @@ const App = () => {
   const [image, setImage] = useState(FortuneCookie);
   const [isOpened, setIsOpened] = useState(false);
 
-  const toggleImage = () => {
+  const toggleImage = async () => {
     const newImage = image === FortuneCookie ? OpenedCookie : FortuneCookie;
     setImage(newImage);
     setIsOpened(!isOpened);
 
     if (newImage === OpenedCookie) {
-      setMessage('Biscoito da sorte aberto!');
+      setTitle('Aqui está a sua sorte de hoje:');
+      setMessage('');
+      await fetchRandomMessage();
     } else {
+      setTitle('Qual é a sua sorte de hoje?');
       setMessage('Clique na imagem e descubra!');
+    }
+  };
+
+  const fetchRandomMessage = async () => {
+    try {
+      const response = await fetch('https://api.quotable.io/quotes/random');
+      const data = await response.json();
+      const {content} = data[0];
+      setMessage(content);
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
