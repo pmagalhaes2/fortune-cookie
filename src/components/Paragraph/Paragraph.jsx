@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 5,
     textAlign: 'center',
-    width: '100%'
   },
   message: {
     backgroundColor: '#E4EDF1',

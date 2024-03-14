@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     flexDirection: 'column',
-    height: 400,
+    minHeight: 400,
     justifyContent: 'space-around',
     paddingVertical: 20,
     paddingHorizontal: 40,

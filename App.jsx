@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FortuneCookie from './src/assets/images/fortune-cookie.png';
 import OpenedCookie from './src/assets/images/opened-cookie.png';
@@ -10,13 +17,16 @@ import Paragraph from './src/components/Paragraph/Paragraph';
 const App = () => {
   const [title, setTitle] = useState('Qual é a sua sorte de hoje?');
   const [message, setMessage] = useState('Clique na imagem e descubra!');
+  const [originalMessage, setOriginalMessage] = useState('');
   const [image, setImage] = useState(FortuneCookie);
   const [isOpened, setIsOpened] = useState(false);
+  const [language, setLanguage] = useState('pt-BR');
 
   const toggleImage = async () => {
     const newImage = image === FortuneCookie ? OpenedCookie : FortuneCookie;
     setImage(newImage);
     setIsOpened(!isOpened);
+    setLanguage('pt-BR');
 
     if (newImage === OpenedCookie) {
       setTitle('Aqui está a sua sorte de hoje:');
@@ -34,6 +44,24 @@ const App = () => {
       const data = await response.json();
       const {content} = data[0];
       setMessage(content);
+      setOriginalMessage(content);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const toogleTranslation = async () => {
+    try {
+      setLanguage(language === 'pt-BR' ? 'en-US' : 'pt-BR');
+      if (language === 'pt-BR') {
+        const response = await fetch(
+          `https://api.mymemory.translated.net/get?q=${message}!&langpair=en|pt-br`,
+        );
+        const {responseData} = await response.json();
+        setMessage(responseData.translatedText);
+      } else {
+        setMessage(originalMessage);
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -48,7 +76,12 @@ const App = () => {
       <View style={styles.container}>
         <Card>
           <Heading text={title} />
-          <Paragraph text={message} isOpened={isOpened} />
+          <TouchableHighlight style={{alignItems: 'flex-end', gap: 2}}>
+            <>
+              <Paragraph text={message} isOpened={isOpened} />
+              {isOpened && <Text onPress={toogleTranslation}>{language}</Text>}
+            </>
+          </TouchableHighlight>
           <TouchableOpacity onPress={toggleImage}>
             <Image source={image} style={styles.image} />
           </TouchableOpacity>
