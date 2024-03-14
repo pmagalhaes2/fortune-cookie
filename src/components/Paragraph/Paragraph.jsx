@@ -8,13 +8,15 @@ const styles = StyleSheet.create({
   paragraph: {
     color: '#34355B',
     fontFamily: 'Montserrat-Regular',
+    marginTop: 20,
+    padding: 5,
+    textAlign: 'center',
+    width: '100%'
   },
   message: {
     backgroundColor: '#E4EDF1',
     borderColor: '#1111',
-    borderWidth: 1,
-    marginTop: 20,
-    padding: 10,
+    borderWidth: 1
   }
 });
 
