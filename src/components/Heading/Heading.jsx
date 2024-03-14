@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     color: '#34355B',
     fontFamily: 'Montserrat-Bold',
     fontSize: 24,
-    fontWeight: '600',
     textAlign: 'center',
   },
 });
