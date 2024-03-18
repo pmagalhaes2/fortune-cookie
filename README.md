@@ -12,6 +12,11 @@ Nice things that could be learned from this project:
 - Async/await;
 - HTTP requests with fetch API.
 
+
+# Behavior
+
+![Image](https://github.com/pmagalhaes2/fortune-cookie/blob/main/src/assets/images/fortune-cookie.gif?raw=true)
+
 ---
 
 ## 🚀 Technologies
